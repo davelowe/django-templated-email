@@ -1,4 +1,4 @@
-import django_vanilla
+import vanilla_django
 from mailsnake import MailSnakeSTS
 from django.conf import settings
 from django.utils.translation import ugettext as _
