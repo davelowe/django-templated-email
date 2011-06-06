@@ -8,7 +8,7 @@ class TemplateBackend(vanilla_django.TemplateBackend):
         self.template_prefix = template_prefix
         self.connection = MailSnakeSTS(apikey = settings.MAILCHIMP_API_KEY)
         
-    def send(self, template_name, from_email, to_email, context, fail_silently=False, headers={}):
+    def send(self, template_name, from_email, recipient_list, context, fail_silently=False, headers={}):
         config = getattr(settings,'TEMPLATED_EMAIL_MAILCHIMP',{}).get(template_name,{})
         parts = self._render_email(template_name, context)
         params={
@@ -18,7 +18,7 @@ class TemplateBackend(vanilla_django.TemplateBackend):
                 'text':parts.get('plain',''),
                 'from_name':' '.join(from_email.split(' ')[:-1]) or 'Nobody',
                 'from_email':from_email,
-                'to_email':to_email,
+                'to_email':recipient_list,
             },
             'track_opens':config.get('track_opens',False),
             'track_clicks':config.get('track_clicks',False),
